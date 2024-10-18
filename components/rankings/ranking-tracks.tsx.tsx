@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Table,
   TableHeader,
@@ -8,9 +8,9 @@ import {
   TableCell,
   getKeyValue,
   Pagination,
-} from "@nextui-org/react";
+} from '@nextui-org/react';
 
-import { tracks } from "./data"; // Adjust the import path as necessary
+import { tracks } from './data';
 
 export default function RankingTracks() {
   const [page, setPage] = React.useState(1);
@@ -44,17 +44,12 @@ export default function RankingTracks() {
           </div>
         }
         classNames={{
-          wrapper: "h-[930]",
+          wrapper: 'h-[930]',
         }}
       >
         <TableHeader>
           <TableColumn key="ranking">RANKING</TableColumn>
-          <TableColumn
-            key="songName"
-            // Adjust padding for better spacing
-          >
-            SONG NAME
-          </TableColumn>
+          <TableColumn key="songName">SONG NAME</TableColumn>
           <TableColumn key="artist">ARTIST</TableColumn>
           <TableColumn key="album">ALBUM</TableColumn>
         </TableHeader>
@@ -64,9 +59,9 @@ export default function RankingTracks() {
               {(columnKey) => (
                 <TableCell
                   style={{
-                    padding: "12px 16px", // Increase cell padding for all columns
-                    whiteSpace: "nowrap", // Prevent text from wrapping
-                    color: "inherit", // Apply color to the first row
+                    padding: '12px 16px',
+                    whiteSpace: 'nowrap',
+                    color: 'inherit',
                   }}
                 >
                   {getKeyValue(item, columnKey)}
