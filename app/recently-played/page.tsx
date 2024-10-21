@@ -88,14 +88,15 @@ export default function TableRecentlyPlayed() {
       }}
     >
       <TableHeader>
+        <TableColumn key="playedAt">PLAYED AT</TableColumn>
         <TableColumn key="songName">SONG NAME</TableColumn>
         <TableColumn key="artist">ARTIST</TableColumn>
         <TableColumn key="album">ALBUM</TableColumn>
-        <TableColumn key="playedAt">PLAYED AT</TableColumn>
       </TableHeader>
       <TableBody items={items}>
         {(item) => (
           <TableRow key={`${item.track.id}-${item.index}`}>
+            <TableCell>{new Date(item.played_at).toLocaleString()}</TableCell>
             <TableCell>
               <div className="flex items-center gap-3">
                 <Image width={50} radius="sm" alt="NextUI hero Image" src={item.track.album.images[0]?.url} />
@@ -104,7 +105,6 @@ export default function TableRecentlyPlayed() {
             </TableCell>
             <TableCell>{truncateText(item.track.artists.map((artist) => artist.name).join(', '), 20)}</TableCell>
             <TableCell>{truncateText(item.track.album.name, 20)}</TableCell>
-            <TableCell>{new Date(item.played_at).toLocaleString()}</TableCell>
           </TableRow>
         )}
       </TableBody>

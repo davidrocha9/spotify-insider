@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { Link } from "@nextui-org/link";
+import { Link } from '@nextui-org/link';
 
-import { HeartFilledIcon } from "./icons";
+import { HeartFilledIcon } from './icons';
 
 export const Footer = () => {
   return (
@@ -10,12 +10,11 @@ export const Footer = () => {
       <Link
         isExternal
         className="flex items-center gap-1 text-current"
-        href="https://nextui-docs-v2.vercel.app?utm_source=next-app-template"
+        href="https://github.com/davidrocha9"
         title="nextui.org homepage"
       >
         <span className="text-default-600 flex items-center">
-          Made with <HeartFilledIcon className="text-red-500 mx-1" /> by David
-          Rocha
+          Made with <HeartFilledIcon className="text-red-500 mx-1" /> by David Rocha
         </span>
       </Link>
     </footer>
