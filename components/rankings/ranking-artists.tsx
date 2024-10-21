@@ -1,5 +1,6 @@
-import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
-import Link from "next/link";
+import { ChevronUpIcon, ChevronDownIcon, MinusIcon, CircleStackIcon, EqualsIcon } from '@heroicons/react/24/outline';
+import { Card, CardBody, CardFooter, Image } from '@nextui-org/react';
+import Link from 'next/link';
 
 interface RankingArtistsProps {
   artists: Array<{
@@ -7,6 +8,7 @@ interface RankingArtistsProps {
     name: string;
     images: Array<{ url: string }>;
     uri: string;
+    trend: 'up' | 'down' | 'same';
   }>;
 }
 
@@ -26,16 +28,19 @@ export default function RankingArtists({ artists }: RankingArtistsProps) {
                   className="w-full object-cover h-[20vh]"
                   radius="md"
                   shadow="sm"
-                  src={artist.images[0]?.url || "/placeholder-image.jpg"}
-                  style={{ cursor: "pointer" }}
+                  src={artist.images[0]?.url || '/placeholder-image.jpg'}
+                  style={{ cursor: 'pointer' }}
                   width="100%"
                 />
               </Link>
             </CardBody>
-            <CardFooter className="text-small justify-between">
-              <p className="text-default-500">
-                {podiumList.indexOf(artist) + 1}.
-              </p>
+            <CardFooter className="text-small flex justify-between">
+              <div className="flex items-center">
+                <p className="text-default-500">{podiumList.indexOf(artist) + 1}.</p>
+                {artist.trend === 'up' && <ChevronUpIcon className="text-green-500 ml-1" style={{ width: '20px' }} />}
+                {artist.trend === 'down' && <ChevronDownIcon className="text-red-500 ml-1" style={{ width: '20px' }} />}
+                {artist.trend === 'same' && <MinusIcon className="text-grey-500 ml-1" style={{ width: '20px' }} />}
+              </div>
               <b>{artist.name}</b>
             </CardFooter>
           </Card>
@@ -52,14 +57,19 @@ export default function RankingArtists({ artists }: RankingArtistsProps) {
                   className="w-full object-cover h-[15vh]"
                   radius="lg"
                   shadow="sm"
-                  src={artist.images[0]?.url || "/placeholder-image.jpg"}
-                  style={{ cursor: "pointer" }}
+                  src={artist.images[0]?.url || '/placeholder-image.jpg'}
+                  style={{ cursor: 'pointer' }}
                   width="100%"
                 />
               </Link>
             </CardBody>
             <CardFooter className="text-small justify-between">
-              <p className="text-default-500">{index + 4}.</p>
+              <div className="flex items-center">
+                <p className="text-default-500">{index + 4}.</p>
+                {artist.trend === 'up' && <ChevronUpIcon className="text-green-500 ml-1" style={{ width: '20px' }} />}
+                {artist.trend === 'down' && <ChevronDownIcon className="text-red-500 ml-1" style={{ width: '20px' }} />}
+                {artist.trend === 'same' && <MinusIcon className="text-grey-500 ml-1" style={{ width: '20px' }} />}
+              </div>
               <b>{artist.name}</b>
             </CardFooter>
           </Card>
