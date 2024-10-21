@@ -4,23 +4,22 @@ import { Card, CardHeader, CardBody, Image } from '@nextui-org/react';
 
 interface SongProps {
   className?: string;
+  song: {
+    name: string;
+    artist: string;
+    albumCover: string;
+  };
 }
 
-export const Song: React.FC<SongProps> = ({ className }) => {
+export const Song: React.FC<SongProps> = ({ className, song }) => {
   return (
     <section className={`flex flex-col items-center justify-center flex-grow h-full ${className}`}>
-      <Image
-        isBlurred
-        isZoomed
-        alt="Un Verano Sin Ti's album cover"
-        src="https://images.genius.com/cd9ced558bb4bd6eb38481d72b65ed7d.1000x1000x1.jpg"
-        width={500}
-      />
+      <Image isBlurred isZoomed alt={`${song.name} album cover`} src={song.album.images[0].url} width={500} />
 
       <div className="flex flex-row items-center justify-between w-[20vw] p-4">
         <div className="flex flex-col text-left w-full">
-          <span className="text-white text-3xl font-bold">Yo No Soy Celoso</span>
-          <span className="text-default-500 text-xl">Bad Bunny</span>
+          <span className="text-white text-3xl font-bold">{song.name}</span>
+          <span className="text-default-500 text-xl">{song.artists[0].name}</span>
         </div>
 
         <div className="ml-4">

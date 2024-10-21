@@ -10,24 +10,34 @@ import {
   getKeyValue,
 } from '@nextui-org/react';
 
-import { tracks } from './data';
-
 export default function TableDailySongs() {
   const [page, setPage] = React.useState(1);
+  const [tracks, setTracks] = React.useState([]);
   const rowsPerPage = 18;
+
+  // Fetch data from local storage when the component mounts
+  React.useEffect(() => {
+    const storedSongs = JSON.parse(localStorage.getItem('songsOfTheDay')) || {};
+    const songsArray = Object.entries(storedSongs).map(([date, song]) => ({
+      date,
+      songName: song.name,
+      artist: song.artists?.map((artist) => artist.name).join(', '),
+      album: song.album?.name,
+    }));
+    setTracks(songsArray);
+  }, []);
 
   const pages = Math.ceil(tracks.length / rowsPerPage);
 
   const items = React.useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
-
     return tracks.slice(start, end);
   }, [page, tracks]);
 
   return (
     <Table
-      aria-label="Example table with client-side pagination"
+      aria-label="Daily Songs Table with Pagination"
       bottomContent={
         <div className="flex w-full justify-center">
           <Pagination
@@ -42,7 +52,7 @@ export default function TableDailySongs() {
         </div>
       }
       classNames={{
-        wrapper: 'h-[930] min-w-[50vw]',
+        wrapper: 'h-[930px] min-w-[50vw]',
       }}
     >
       <TableHeader>
@@ -53,13 +63,12 @@ export default function TableDailySongs() {
       </TableHeader>
       <TableBody items={items}>
         {(item) => (
-          <TableRow key={item.key}>
+          <TableRow key={item.date}>
             {(columnKey) => (
               <TableCell
                 style={{
                   padding: '12px 16px',
                   whiteSpace: 'nowrap',
-                  color: item.key === '1' ? '#1DB954' : 'inherit',
                 }}
               >
                 {getKeyValue(item, columnKey)}

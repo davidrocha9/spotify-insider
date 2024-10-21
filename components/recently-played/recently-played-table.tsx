@@ -59,7 +59,6 @@ export default function TableRecentlyPlayed() {
                 style={{
                   padding: '12px 16px',
                   whiteSpace: 'nowrap',
-                  color: item.key === '1' ? '#1DB954' : 'inherit',
                 }}
               >
                 {getKeyValue(item, columnKey)}

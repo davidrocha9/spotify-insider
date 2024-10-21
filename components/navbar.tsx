@@ -14,6 +14,7 @@ import { useState, useEffect } from 'react';
 export const Navbar = ({ className }: { className?: string }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [userInfo, setUserInfo] = useState<any>(null);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -21,6 +22,10 @@ export const Navbar = ({ className }: { className?: string }) => {
         const response = await fetch('/api/auth/status');
         const data = await response.json();
         setIsAuthenticated(data.isAuthenticated);
+
+        if (data.isAuthenticated) {
+          fetchUserInfo();
+        }
       } catch (error) {
         console.error('Failed to check auth status:', error);
       } finally {
@@ -29,6 +34,20 @@ export const Navbar = ({ className }: { className?: string }) => {
     };
     checkAuth();
   }, []);
+
+  const fetchUserInfo = async () => {
+    try {
+      const response = await fetch('/api/user/');
+      if (response.ok) {
+        const userData = await response.json();
+        setUserInfo(userData);
+      } else {
+        console.error('Failed to fetch user info');
+      }
+    } catch (error) {
+      console.error('Error fetching user info:', error);
+    }
+  };
 
   const handleSpotifyLogin = async () => {
     try {
@@ -42,6 +61,7 @@ export const Navbar = ({ className }: { className?: string }) => {
     try {
       await fetch('/api/auth/logout', { method: 'POST' });
       setIsAuthenticated(false);
+      setUserInfo(null);
     } catch (error) {
       console.error('Failed to logout:', error);
     }
@@ -109,17 +129,21 @@ export const Navbar = ({ className }: { className?: string }) => {
       <div className="w-full mt-auto pb-4 px-4 flex items-center justify-between">
         {loading ? (
           <div className="flex items-center justify-center w-full">
-            <CircularProgress />
+            <CircularProgress color="success" size="lg" />
           </div>
-        ) : isAuthenticated ? (
+        ) : isAuthenticated && !loading ? (
           <>
-            <User
-              avatarProps={{
-                src: 'https://avatars.githubusercontent.com/u/58984118?v=4',
-              }}
-              description="Hip-hop enthusiast"
-              name="David Rocha"
-            />
+            {userInfo ? (
+              <User
+                avatarProps={{
+                  src: userInfo.profileImage,
+                }}
+                description={userInfo.description || 'Music lover'}
+                name={userInfo.displayName || 'User'}
+              />
+            ) : (
+              <CircularProgress color="success" size="lg" />
+            )}
             <Button isIconOnly onClick={handleLogout} className="p-2">
               <ArrowRightEndOnRectangleIcon className="w-8 h-8 text-red-500 cursor-pointer" />
             </Button>
