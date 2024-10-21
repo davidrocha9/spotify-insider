@@ -1,14 +1,21 @@
-'use client';
+"use client";
 
-import { BreadcrumbItem, Breadcrumbs, Card, CardBody, Tab, Tabs } from '@nextui-org/react';
-import Link from 'next/link';
-import { Key, useEffect, useState } from 'react';
-import { CircularProgress } from '@nextui-org/progress';
+import {
+  BreadcrumbItem,
+  Breadcrumbs,
+  Card,
+  CardBody,
+  Tab,
+  Tabs,
+} from "@nextui-org/react";
+import Link from "next/link";
+import { Key, useEffect, useState } from "react";
+import { CircularProgress } from "@nextui-org/progress";
 
-import RankingArtists from '@/components/rankings/ranking-artists';
+import RankingArtists from "@/components/rankings/ranking-artists";
 
 export default function App() {
-  const [selected, setSelected] = useState<string>('past-4');
+  const [selected, setSelected] = useState<string>("past-4");
   const [topArtists, setTopArtists] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [cache, setCache] = useState<Record<string, any[]>>({});
@@ -17,11 +24,14 @@ export default function App() {
     if (cache[timeRange]) {
       setTopArtists(cache[timeRange]);
       setIsLoading(false);
+
       return;
     }
 
     try {
-      const response = await fetch(`/api/ranking/artists?time_range=${timeRange}`);
+      const response = await fetch(
+        `/api/ranking/artists?time_range=${timeRange}`,
+      );
       const data = await response.json();
 
       setTopArtists(data.items);
@@ -32,23 +42,24 @@ export default function App() {
 
       setIsLoading(false);
     } catch (error) {
-      console.error('Error fetching top artists:', error);
+      console.error("Error fetching top artists:", error);
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
     const timeRangeMap: Record<string, string> = {
-      'past-4': 'short_term',
-      'past-6': 'medium_term',
-      'past-year': 'long_term',
+      "past-4": "short_term",
+      "past-6": "medium_term",
+      "past-year": "long_term",
     };
+
     fetchTopArtists(timeRangeMap[selected]);
   }, [selected]);
 
   return (
     <div className="flex flex-col w-full max-w-screen-xl mx-auto">
-      <Breadcrumbs key={'foreground'} color={'foreground'}>
+      <Breadcrumbs key={"foreground"} color={"foreground"}>
         <BreadcrumbItem>
           <Link href="/rankings">Ranking</Link>
         </BreadcrumbItem>

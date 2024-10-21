@@ -1,31 +1,42 @@
-import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
+import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 
 export async function GET(request: Request) {
-  const accessToken = cookies().get('spotify_access_token')?.value;
+  const accessToken = cookies().get("spotify_access_token")?.value;
 
   if (!accessToken) {
-    return NextResponse.json({ error: 'No access token found' }, { status: 401 });
+    return NextResponse.json(
+      { error: "No access token found" },
+      { status: 401 },
+    );
   }
 
   const { searchParams } = new URL(request.url);
-  const timeRange = searchParams.get('time_range') || 'short_term';
+  const timeRange = searchParams.get("time_range") || "short_term";
 
   try {
-    const response = await fetch(`https://api.spotify.com/v1/me/top/tracks?time_range=${timeRange}&limit=50`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
+    const response = await fetch(
+      `https://api.spotify.com/v1/me/top/tracks?time_range=${timeRange}&limit=50`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       },
-    });
+    );
 
     if (!response.ok) {
-      throw new Error('Failed to fetch top tracks');
+      throw new Error("Failed to fetch top tracks");
     }
 
     const data = await response.json();
+
     return NextResponse.json(data);
   } catch (error) {
-    console.error('Error fetching Spotify top tracks:', error);
-    return NextResponse.json({ error: 'Failed to fetch top tracks' }, { status: 500 });
+    console.error("Error fetching Spotify top tracks:", error);
+
+    return NextResponse.json(
+      { error: "Failed to fetch top tracks" },
+      { status: 500 },
+    );
   }
 }

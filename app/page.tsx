@@ -1,14 +1,21 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { ChartBarIcon, CalendarDaysIcon, PlusCircleIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
-import { Divider, Image } from '@nextui-org/react';
+import { useEffect, useState } from "react";
+import {
+  ChartBarIcon,
+  CalendarDaysIcon,
+  PlusCircleIcon,
+  ArrowPathIcon,
+} from "@heroicons/react/24/outline";
+import { Divider, Image } from "@nextui-org/react";
 
 async function fetchUserData() {
-  const response = await fetch('/api/user');
+  const response = await fetch("/api/user");
+
   if (!response.ok) {
     return;
   }
+
   return response.json();
 }
 
@@ -20,12 +27,13 @@ export default function Home() {
     const getUserData = async () => {
       try {
         const data = await fetchUserData();
+
         setUserData(data);
       } catch (err) {
         if (err instanceof Error) {
           setError(err.message);
         } else {
-          setError('An unknown error occurred');
+          setError("An unknown error occurred");
         }
       }
     };
@@ -41,12 +49,17 @@ export default function Home() {
           <Image
             isBlurred
             alt={`${userData.displayName}'s profile picture`}
-            src={userData.profileImage || 'https://avatars.githubusercontent.com/u/58984118?v=4'}
+            src={
+              userData.profileImage ||
+              "https://avatars.githubusercontent.com/u/58984118?v=4"
+            }
             width={240}
           />
           <div className="inline-block text-center justify-center">
             <span className="text-white text-3xl">Welcome, </span>
-            <span className="text-green-500 text-3xl font-bold">{userData.displayName}</span>
+            <span className="text-green-500 text-3xl font-bold">
+              {userData.displayName}
+            </span>
             <br />
           </div>
           <div className="max-w-md">
@@ -64,8 +77,9 @@ export default function Home() {
           <div className="flex flex-col justify-center h-32 w-full">
             <p className="text-lg font-semibold">Your own charts</p>
             <p className="text-base text-default-500">
-              View your most listened tracks, artists, and genres and switch between 3 different time periods. Your data
-              is updated approximately every day.
+              View your most listened tracks, artists, and genres and switch
+              between 3 different time periods. Your data is updated
+              approximately every day.
             </p>
           </div>
         </div>
@@ -75,7 +89,8 @@ export default function Home() {
           <div className="flex flex-col justify-center h-32 w-full">
             <p className="text-lg font-semibold">Your calendar</p>
             <p className="text-base text-default-500">
-              Keep track of your music trends over time and view past stats for comparison.
+              Keep track of your music trends over time and view past stats for
+              comparison.
             </p>
           </div>
         </div>
@@ -85,7 +100,8 @@ export default function Home() {
           <div className="flex flex-col justify-center h-32 w-full">
             <p className="text-lg font-semibold">Add to your library</p>
             <p className="text-base text-default-500">
-              Quickly add new music to your library and build your personalized playlists.
+              Quickly add new music to your library and build your personalized
+              playlists.
             </p>
           </div>
         </div>
@@ -95,7 +111,8 @@ export default function Home() {
           <div className="flex flex-col justify-center h-32 w-full">
             <p className="text-lg font-semibold">Discover new music</p>
             <p className="text-base text-default-500">
-              Find new tracks and artists based on your current listening habits.
+              Find new tracks and artists based on your current listening
+              habits.
             </p>
           </div>
         </div>

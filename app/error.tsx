@@ -1,8 +1,14 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
-export default function Error({ error, reset }: { error: Error; reset: () => void }) {
+export default function Error({
+  error,
+  reset,
+}: {
+  error: Error;
+  reset: () => void;
+}) {
   useEffect(() => {
     /* eslint-disable no-console */
     console.error(error);

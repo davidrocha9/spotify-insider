@@ -1,8 +1,17 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, Image } from '@nextui-org/react';
-import { CircularProgress } from '@nextui-org/progress';
+import React, { useEffect, useState } from "react";
+import {
+  Table,
+  TableHeader,
+  TableColumn,
+  TableBody,
+  TableRow,
+  TableCell,
+  Pagination,
+  Image,
+} from "@nextui-org/react";
+import { CircularProgress } from "@nextui-org/progress";
 
 interface Track {
   track: {
@@ -26,13 +35,13 @@ export default function TableRecentlyPlayed() {
   useEffect(() => {
     const fetchRecentlyPlayed = async () => {
       try {
-        const response = await fetch('/api/recently-played');
+        const response = await fetch("/api/recently-played");
         const data = await response.json();
 
         setRecentTracks(data.items);
         setIsLoading(false);
       } catch (error) {
-        console.error('Error fetching recently played tracks:', error);
+        console.error("Error fetching recently played tracks:", error);
         setIsLoading(false);
       }
     };
@@ -54,8 +63,9 @@ export default function TableRecentlyPlayed() {
 
   const truncateText = (text: string, maxLength: number) => {
     if (text.length > maxLength) {
-      return text.substring(0, maxLength) + '...';
+      return text.substring(0, maxLength) + "...";
     }
+
     return text;
   };
 
@@ -84,7 +94,7 @@ export default function TableRecentlyPlayed() {
         </div>
       }
       classNames={{
-        wrapper: 'h-[930] min-w-[50vw]',
+        wrapper: "h-[930] min-w-[50vw]",
       }}
     >
       <TableHeader>
@@ -99,11 +109,21 @@ export default function TableRecentlyPlayed() {
             <TableCell>{new Date(item.played_at).toLocaleString()}</TableCell>
             <TableCell>
               <div className="flex items-center gap-3">
-                <Image width={50} radius="sm" alt="NextUI hero Image" src={item.track.album.images[0]?.url} />
+                <Image
+                  alt="NextUI hero Image"
+                  radius="sm"
+                  src={item.track.album.images[0]?.url}
+                  width={50}
+                />
                 {truncateText(item.track.name, 20)}
               </div>
             </TableCell>
-            <TableCell>{truncateText(item.track.artists.map((artist) => artist.name).join(', '), 20)}</TableCell>
+            <TableCell>
+              {truncateText(
+                item.track.artists.map((artist) => artist.name).join(", "),
+                20,
+              )}
+            </TableCell>
             <TableCell>{truncateText(item.track.album.name, 20)}</TableCell>
           </TableRow>
         )}

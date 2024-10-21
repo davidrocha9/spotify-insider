@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Table,
   TableHeader,
@@ -8,9 +8,9 @@ import {
   TableCell,
   Pagination,
   getKeyValue,
-} from '@nextui-org/react';
+} from "@nextui-org/react";
 
-import { tracks } from './data';
+import { tracks } from "./data";
 
 export default function TableRecentlyPlayed() {
   const [page, setPage] = React.useState(1);
@@ -42,7 +42,7 @@ export default function TableRecentlyPlayed() {
         </div>
       }
       classNames={{
-        wrapper: 'h-[930] min-w-[50vw]',
+        wrapper: "h-[930] min-w-[50vw]",
       }}
     >
       <TableHeader>
@@ -57,8 +57,8 @@ export default function TableRecentlyPlayed() {
             {(columnKey) => (
               <TableCell
                 style={{
-                  padding: '12px 16px',
-                  whiteSpace: 'nowrap',
+                  padding: "12px 16px",
+                  whiteSpace: "nowrap",
                 }}
               >
                 {getKeyValue(item, columnKey)}

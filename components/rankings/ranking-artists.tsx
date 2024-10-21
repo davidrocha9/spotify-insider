@@ -1,5 +1,5 @@
-import { Card, CardBody, CardFooter, Image } from '@nextui-org/react';
-import Link from 'next/link';
+import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
+import Link from "next/link";
 
 interface RankingArtistsProps {
   artists: Array<{
@@ -20,20 +20,22 @@ export default function RankingArtists({ artists }: RankingArtistsProps) {
         {podiumList.map((artist) => (
           <Card key={artist.id} isPressable shadow="lg">
             <CardBody className="overflow-visible p-0">
-              <Link href={artist.uri} passHref>
+              <Link passHref href={artist.uri}>
                 <Image
                   alt={artist.name}
                   className="w-full object-cover h-[20vh]"
                   radius="md"
                   shadow="sm"
-                  src={artist.images[0]?.url || '/placeholder-image.jpg'}
+                  src={artist.images[0]?.url || "/placeholder-image.jpg"}
+                  style={{ cursor: "pointer" }}
                   width="100%"
-                  style={{ cursor: 'pointer' }}
                 />
               </Link>
             </CardBody>
             <CardFooter className="text-small justify-between">
-              <p className="text-default-500">{podiumList.indexOf(artist) + 1}.</p>
+              <p className="text-default-500">
+                {podiumList.indexOf(artist) + 1}.
+              </p>
               <b>{artist.name}</b>
             </CardFooter>
           </Card>
@@ -44,15 +46,15 @@ export default function RankingArtists({ artists }: RankingArtistsProps) {
         {list.map((artist, index) => (
           <Card key={artist.id} isPressable shadow="sm">
             <CardBody className="overflow-visible p-0">
-              <Link href={artist.uri} passHref>
+              <Link passHref href={artist.uri}>
                 <Image
                   alt={artist.name}
                   className="w-full object-cover h-[15vh]"
                   radius="lg"
                   shadow="sm"
-                  src={artist.images[0]?.url || '/placeholder-image.jpg'}
+                  src={artist.images[0]?.url || "/placeholder-image.jpg"}
+                  style={{ cursor: "pointer" }}
                   width="100%"
-                  style={{ cursor: 'pointer' }}
                 />
               </Link>
             </CardBody>

@@ -382,7 +382,7 @@ export const tracks = [
     ranking: "55",
     songName: "Shivers",
     artist: "Ed Sheeran",
-    album: "=", 
+    album: "=",
   },
   {
     key: "56",

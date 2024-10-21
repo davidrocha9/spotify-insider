@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Table,
   TableHeader,
@@ -8,7 +8,7 @@ import {
   TableCell,
   Pagination,
   getKeyValue,
-} from '@nextui-org/react';
+} from "@nextui-org/react";
 
 interface Artist {
   name: string;
@@ -31,19 +31,24 @@ interface SongsArray {
 
 export default function TableDailySongs() {
   const [page, setPage] = React.useState(1);
-  const [tracks, setTracks] = React.useState<{ date: string; songName: string; artist: string; album: string }[]>([]);
+  const [tracks, setTracks] = React.useState<
+    { date: string; songName: string; artist: string; album: string }[]
+  >([]);
   const rowsPerPage = 18;
 
   React.useEffect(() => {
-    const storedSongs = localStorage.getItem('songsOfTheDay');
+    const storedSongs = localStorage.getItem("songsOfTheDay");
     const songsArray: SongsArray = storedSongs ? JSON.parse(storedSongs) : {};
 
-    const formattedSongsArray = Object.entries(songsArray).map(([date, song]) => ({
-      date,
-      songName: song.name,
-      artist: song.artists?.map((artist) => artist.name).join(', '),
-      album: song.album?.name,
-    }));
+    const formattedSongsArray = Object.entries(songsArray).map(
+      ([date, song]) => ({
+        date,
+        songName: song.name,
+        artist: song.artists?.map((artist) => artist.name).join(", "),
+        album: song.album?.name,
+      }),
+    );
+
     setTracks(formattedSongsArray);
   }, []);
 
@@ -52,6 +57,7 @@ export default function TableDailySongs() {
   const items = React.useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
+
     return tracks.slice(start, end);
   }, [page, tracks]);
 
@@ -72,7 +78,7 @@ export default function TableDailySongs() {
         </div>
       }
       classNames={{
-        wrapper: 'h-[930px] min-w-[50vw]',
+        wrapper: "h-[930px] min-w-[50vw]",
       }}
     >
       <TableHeader>
@@ -87,8 +93,8 @@ export default function TableDailySongs() {
             {(columnKey) => (
               <TableCell
                 style={{
-                  padding: '12px 16px',
-                  whiteSpace: 'nowrap',
+                  padding: "12px 16px",
+                  whiteSpace: "nowrap",
                 }}
               >
                 {getKeyValue(item, columnKey)}

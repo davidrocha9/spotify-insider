@@ -1,12 +1,8 @@
-import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
+import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 
-const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
-const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-
-const TOKEN_URL = 'https://accounts.spotify.com/api/token';
-const RECENTLY_PLAYED_URL = 'https://api.spotify.com/v1/me/player/recently-played';
+const RECENTLY_PLAYED_URL =
+  "https://api.spotify.com/v1/me/player/recently-played";
 
 interface Track {
   id: string;
@@ -19,15 +15,12 @@ interface RecentlyPlayedTrack {
   track: Track;
 }
 
-function getTodayDate() {
-  return new Date().toISOString().split('T')[0];
-}
-
 function determineSongOfTheDay(tracks: RecentlyPlayedTrack[]) {
   const songCount: { [key: string]: { count: number; track: Track } } = {};
 
   tracks.forEach(({ track }) => {
     const songId = track.id;
+
     if (!songCount[songId]) {
       songCount[songId] = { count: 0, track };
     }
@@ -35,17 +28,20 @@ function determineSongOfTheDay(tracks: RecentlyPlayedTrack[]) {
   });
 
   const songOfTheDay = Object.values(songCount).reduce((prev, current) =>
-    current.count > prev.count ? current : prev
+    current.count > prev.count ? current : prev,
   );
 
   return songOfTheDay.track;
 }
 
-export async function GET(request: Request) {
-  const accessToken = cookies().get('spotify_access_token')?.value;
+export async function GET() {
+  const accessToken = cookies().get("spotify_access_token")?.value;
 
   if (!accessToken) {
-    return NextResponse.json({ error: 'No access token found' }, { status: 401 });
+    return NextResponse.json(
+      { error: "No access token found" },
+      { status: 401 },
+    );
   }
 
   try {
@@ -56,20 +52,27 @@ export async function GET(request: Request) {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to fetch recently played tracks');
+      throw new Error("Failed to fetch recently played tracks");
     }
 
     const { items: recentTracks } = await response.json();
 
     if (!Array.isArray(recentTracks)) {
-      return NextResponse.json({ error: 'Recent tracks is not an array' }, { status: 500 });
+      return NextResponse.json(
+        { error: "Recent tracks is not an array" },
+        { status: 500 },
+      );
     }
 
     const songOfTheDay = determineSongOfTheDay(recentTracks);
 
     return NextResponse.json(songOfTheDay);
   } catch (error) {
-    console.error('Error fetching Spotify recently played tracks:', error);
-    return NextResponse.json({ error: 'Failed to fetch recently played tracks' }, { status: 500 });
+    console.error("Error fetching Spotify recently played tracks:", error);
+
+    return NextResponse.json(
+      { error: "Failed to fetch recently played tracks" },
+      { status: 500 },
+    );
   }
 }
