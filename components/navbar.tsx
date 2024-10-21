@@ -150,7 +150,6 @@ export const Navbar = ({ className }: { className?: string }) => {
           </>
         ) : (
           <Button
-            auto
             color="success"
             onClick={handleSpotifyLogin}
             className="w-full flex items-center justify-center gap-2"

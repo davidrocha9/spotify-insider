@@ -2,12 +2,21 @@
 
 import { Card, CardHeader, CardBody, Image } from '@nextui-org/react';
 
+interface Artist {
+  name: string;
+}
+
+interface Album {
+  name: string;
+  images: { url: string }[];
+}
+
 interface SongProps {
   className?: string;
   song: {
     name: string;
-    artist: string;
-    albumCover: string;
+    artists: Artist[];
+    album: Album;
   };
 }
 

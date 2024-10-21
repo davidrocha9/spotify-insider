@@ -24,7 +24,7 @@ export default function RankingArtists({ artists }: RankingArtistsProps) {
                 <Image
                   alt={artist.name}
                   className="w-full object-cover h-[20vh]"
-                  radius="d"
+                  radius="md"
                   shadow="sm"
                   src={artist.images[0]?.url || '/placeholder-image.jpg'}
                   width="100%"

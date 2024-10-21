@@ -4,8 +4,21 @@ import React, { useEffect, useState } from 'react';
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, Image } from '@nextui-org/react';
 import { CircularProgress } from '@nextui-org/progress';
 
+interface Track {
+  track: {
+    id: string;
+    name: string;
+    album: {
+      name: string;
+      images: { url: string }[];
+    };
+    artists: { name: string }[];
+  };
+  played_at: string;
+}
+
 export default function TableRecentlyPlayed() {
-  const [recentTracks, setRecentTracks] = useState([]);
+  const [recentTracks, setRecentTracks] = useState<Track[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(1);
   const rowsPerPage = 12;
@@ -39,7 +52,7 @@ export default function TableRecentlyPlayed() {
     }));
   }, [page, recentTracks]);
 
-  const truncateText = (text, maxLength) => {
+  const truncateText = (text: string, maxLength: number) => {
     if (text.length > maxLength) {
       return text.substring(0, maxLength) + '...';
     }

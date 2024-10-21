@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 
 const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
@@ -7,12 +8,23 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 const TOKEN_URL = 'https://accounts.spotify.com/api/token';
 const RECENTLY_PLAYED_URL = 'https://api.spotify.com/v1/me/player/recently-played';
 
-function getTodayDate() {
-  return new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
+interface Track {
+  id: string;
+  name: string;
+  artists: { name: string }[];
+  album: { name: string; images: { url: string }[] };
 }
 
-function determineSongOfTheDay(tracks) {
-  const songCount = {};
+interface RecentlyPlayedTrack {
+  track: Track;
+}
+
+function getTodayDate() {
+  return new Date().toISOString().split('T')[0];
+}
+
+function determineSongOfTheDay(tracks: RecentlyPlayedTrack[]) {
+  const songCount: { [key: string]: { count: number; track: Track } } = {};
 
   tracks.forEach(({ track }) => {
     const songId = track.id;
@@ -21,7 +33,7 @@ function determineSongOfTheDay(tracks) {
     }
     songCount[songId].count += 1;
   });
-  g;
+
   const songOfTheDay = Object.values(songCount).reduce((prev, current) =>
     current.count > prev.count ? current : prev
   );
@@ -29,20 +41,8 @@ function determineSongOfTheDay(tracks) {
   return songOfTheDay.track;
 }
 
-function storeSongOfTheDay(song) {
-  if (typeof window !== 'undefined') {
-    const today = getTodayDate();
-    const storedSongs = JSON.parse(localStorage.getItem('songsOfTheDay')) || {};
-
-    if (!storedSongs[today]) {
-      storedSongs[today] = song;
-      localStorage.setItem('songsOfTheDay', JSON.stringify(storedSongs));
-    }
-  }
-}
-
-export async function GET(request) {
-  const accessToken = request.cookies.get('spotify_access_token')?.value;
+export async function GET(request: Request) {
+  const accessToken = cookies().get('spotify_access_token')?.value;
 
   if (!accessToken) {
     return NextResponse.json({ error: 'No access token found' }, { status: 401 });

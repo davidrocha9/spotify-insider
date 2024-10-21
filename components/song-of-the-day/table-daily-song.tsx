@@ -10,21 +10,41 @@ import {
   getKeyValue,
 } from '@nextui-org/react';
 
+interface Artist {
+  name: string;
+}
+
+interface Album {
+  name: string;
+  images?: { url: string }[];
+}
+
+interface Song {
+  name: string;
+  artists: Artist[];
+  album: Album;
+}
+
+interface SongsArray {
+  [key: string]: Song;
+}
+
 export default function TableDailySongs() {
   const [page, setPage] = React.useState(1);
-  const [tracks, setTracks] = React.useState([]);
+  const [tracks, setTracks] = React.useState<{ date: string; songName: string; artist: string; album: string }[]>([]);
   const rowsPerPage = 18;
 
-  // Fetch data from local storage when the component mounts
   React.useEffect(() => {
-    const storedSongs = JSON.parse(localStorage.getItem('songsOfTheDay')) || {};
-    const songsArray = Object.entries(storedSongs).map(([date, song]) => ({
+    const storedSongs = localStorage.getItem('songsOfTheDay');
+    const songsArray: SongsArray = storedSongs ? JSON.parse(storedSongs) : {};
+
+    const formattedSongsArray = Object.entries(songsArray).map(([date, song]) => ({
       date,
       songName: song.name,
       artist: song.artists?.map((artist) => artist.name).join(', '),
       album: song.album?.name,
     }));
-    setTracks(songsArray);
+    setTracks(formattedSongsArray);
   }, []);
 
   const pages = Math.ceil(tracks.length / rowsPerPage);

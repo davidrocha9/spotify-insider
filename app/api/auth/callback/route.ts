@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 
 const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
@@ -9,7 +10,7 @@ export async function GET(request: Request) {
   const code = searchParams.get('code');
   const state = searchParams.get('state');
 
-  const storedState = request.cookies.get('spotify_auth_state')?.value;
+  const storedState = cookies().get('spotify_auth_state')?.value;
 
   if (!state || state !== storedState) {
     return NextResponse.json({ error: 'State mismatch' }, { status: 400 });

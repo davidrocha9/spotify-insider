@@ -13,8 +13,8 @@ async function fetchUserData() {
 }
 
 export default function Home() {
-  const [userData, setUserData] = useState(null);
-  const [error, setError] = useState(null);
+  const [userData, setUserData] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const getUserData = async () => {
@@ -22,7 +22,11 @@ export default function Home() {
         const data = await fetchUserData();
         setUserData(data);
       } catch (err) {
-        setError(err.message);
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError('An unknown error occurred');
+        }
       }
     };
 
@@ -31,12 +35,13 @@ export default function Home() {
 
   return (
     <section className="flex flex-col items-center justify-center flex-grow h-full gap-4">
+      {error && <p className="text-red-500">{error}</p>}
       {userData && (
         <>
           <Image
             isBlurred
             alt={`${userData.displayName}'s profile picture`}
-            src={userData.profileImage || 'https://avatars.githubusercontent.com/u/58984118?v=4'} // Default image if no profile image
+            src={userData.profileImage || 'https://avatars.githubusercontent.com/u/58984118?v=4'}
             width={240}
           />
           <div className="inline-block text-center justify-center">

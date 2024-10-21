@@ -2,17 +2,17 @@
 
 import { BreadcrumbItem, Breadcrumbs, Card, CardBody, Tab, Tabs } from '@nextui-org/react';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { Key, useEffect, useState } from 'react';
 import { CircularProgress } from '@nextui-org/progress';
 import RankingTracks from '@/components/rankings/ranking-tracks.tsx';
 
 export default function App() {
-  const [selected, setSelected] = useState('past-4');
-  const [topTracks, setTopTracks] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [cache, setCache] = useState({});
+  const [selected, setSelected] = useState<string>('past-4');
+  const [topTracks, setTopTracks] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [cache, setCache] = useState<Record<string, any[]>>({});
 
-  const fetchTopTracks = async (timeRange) => {
+  const fetchTopTracks = async (timeRange: string) => {
     if (cache[timeRange]) {
       setTopTracks(cache[timeRange]);
       setIsLoading(false);
@@ -37,7 +37,7 @@ export default function App() {
   };
 
   useEffect(() => {
-    const timeRangeMap = {
+    const timeRangeMap: Record<string, string> = {
       'past-4': 'short_term',
       'past-6': 'medium_term',
       'past-year': 'long_term',
@@ -61,7 +61,13 @@ export default function App() {
       </div>
       <Card>
         <CardBody className="overflow-hidden">
-          <Tabs fullWidth aria-label="Tabs form" selectedKey={selected} size="md" onSelectionChange={setSelected}>
+          <Tabs
+            fullWidth
+            aria-label="Tabs form"
+            selectedKey={selected}
+            size="md"
+            onSelectionChange={(key: Key) => setSelected(key.toString())}
+          >
             <Tab key="past-4" title="Past 4 weeks">
               {isLoading ? (
                 <div className="w-[40vw] h-[64vh] overflow-y-auto flex items-center justify-center">

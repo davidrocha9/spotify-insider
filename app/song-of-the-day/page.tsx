@@ -36,7 +36,8 @@ export default function SongOfTheDayPage() {
 
   const fetchSongOfTheDay = async () => {
     const today = getTodayDate();
-    const storedSongs = JSON.parse(localStorage.getItem('songsOfTheDay')) || {};
+    const storedSongsString = localStorage.getItem('songsOfTheDay');
+    const storedSongs = storedSongsString ? JSON.parse(storedSongsString) : {};
 
     if (storedSongs[today]) {
       setSongOfTheDay(storedSongs[today]);

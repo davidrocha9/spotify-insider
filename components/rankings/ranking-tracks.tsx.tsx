@@ -1,7 +1,27 @@
 import React from 'react';
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, Image } from '@nextui-org/react';
 
-export default function RankingTracks({ tracks }) {
+interface Artist {
+  name: string;
+}
+
+interface Album {
+  name: string;
+  images: { url: string }[];
+}
+
+interface Track {
+  id: string;
+  name: string;
+  artists: Artist[];
+  album: Album;
+}
+
+interface RankingTracksProps {
+  tracks: Track[];
+}
+
+export default function RankingTracks({ tracks }: RankingTracksProps) {
   const [page, setPage] = React.useState(1);
   const rowsPerPage = 11;
 
@@ -17,7 +37,7 @@ export default function RankingTracks({ tracks }) {
     }));
   }, [page, tracks]);
 
-  const truncateText = (text, maxLength) => {
+  const truncateText = (text: string, maxLength: number) => {
     return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
   };
 
@@ -56,13 +76,7 @@ export default function RankingTracks({ tracks }) {
 
               <TableCell>
                 <div className="flex items-center gap-3">
-                  <Image
-                    src={item.album.images[0]?.url}
-                    alt={item.album.name}
-                    width={50}
-                    objectFit="cover"
-                    radius="sm"
-                  />
+                  <Image src={item.album.images[0]?.url} alt={item.album.name} width={50} radius="sm" />
                   {truncateText(item.name, 30)}
                 </div>
               </TableCell>
